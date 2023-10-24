@@ -2,6 +2,7 @@ from django.views import View
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from users import models 
+from core.wrappers import validate_token
 
 def index (request):
     return JsonResponse ({
@@ -10,9 +11,11 @@ def index (request):
         "data": {}
     }, status=200)
 
+
 class ReferralByPhone (View):
     """ Referral links search user by phone number """
     
+    @validate_token
     def get (self, request):
         
         # Get phone from get data

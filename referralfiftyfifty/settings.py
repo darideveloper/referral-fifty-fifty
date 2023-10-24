@@ -38,6 +38,7 @@ DEBUG = os.environ.get("DEBUG") == "True"
 # Application definition
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 INSTALLED_APPS = [
+    'core',
     'users',
     'django.contrib.admin',
     'django.contrib.auth',

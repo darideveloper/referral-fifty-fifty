@@ -12,25 +12,29 @@ def index (request):
     }, status=200)
 
 
-class ReferralByPhone (View):
+class Referral (View):
     """ Referral links search user by phone number """
     
     @validate_token
     def get (self, request):
         
-        # Get phone from get data
+        # Get phone and email from get data
         phone = request.GET.get('phone', None)
+        email = request.GET.get('email', None)
         
         # If phone is None, return error
-        if phone is None:
+        if not phone and not email:
             return JsonResponse ({
                 "status": "error",
-                "message": "Phone is required",
+                "message": "Phone or email is required",
                 "data": {}
             }, status=400)
             
         # Get user by phone
-        users_match = models.User.objects.filter(phone=phone, active=True)
+        if phone:
+            users_match = models.User.objects.filter(phone=phone, active=True)
+        else:
+            users_match = models.User.objects.filter(email=email, active=True)
         
         if users_match.count() != 1:
             return JsonResponse ({

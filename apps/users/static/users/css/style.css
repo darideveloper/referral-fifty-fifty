@@ -27,6 +27,7 @@ p {
   align-items: center;
   justify-content: center;
   height: calc(100vh - 0px);
+  width: 550px;
 }
 .register .content h1 {
   font-size: 1.8rem;
@@ -38,17 +39,20 @@ p {
   margin-bottom: 1rem;
 }
 .register .content form {
-  width: 550px;
+  width: 100%;
 }
 .register .content form .form-group {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
 }
+.register .content form .form-group .input-wrapper input {
+  width: calc(85% - 1.4rem);
+}
 .register .content form .input-wrapper {
   width: 100%;
   margin: 0;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 .register .content form .input-wrapper label {
   display: block;
@@ -62,7 +66,7 @@ p {
   padding: 0.2rem 1.2rem;
   border-radius: 0.3rem;
   border: 2px solid rgba(155, 164, 181, 0.3);
-  width: calc(85% - 1.4rem);
+  width: calc(100% - 1.4rem);
 }
 .register .content form .input-wrapper input#phone {
   padding-left: 3rem;
@@ -75,6 +79,19 @@ p {
 .register .content form .input-wrapper input:hover {
   background-color: rgba(155, 164, 181, 0.05);
 }
+.register .content form .input-wrapper input::placeholder {
+  color: rgba(57, 72, 103, 0.3);
+}
+.register .content form .input-wrapper input.refferral {
+  width: calc(92% - 1.4rem);
+}
+.register .content form .input-wrapper .form-text {
+  opacity: 0;
+  transition-duration: 0.2s;
+}
+.register .content form .input-wrapper:hover .form-text {
+  opacity: 1;
+}
 .register .content form .form-text {
   font-size: 0.7rem;
   margin: 0;
@@ -86,6 +103,26 @@ p {
 }
 .register .content form .btn.cta {
   margin-top: 1.5rem;
+}
+@media screen and (max-width: 700px) {
+  .register {
+    width: 80%;
+  }
+}
+@media screen and (max-width: 560px) {
+  .register .content form .form-group {
+    flex-direction: column;
+  }
+  .register .content form .form-group .input-wrapper .iti {
+    width: 100%;
+    width: calc(92% - 1.4rem);
+  }
+  .register .content form .form-group .input-wrapper input {
+    width: calc(92% - 1.4rem);
+  }
+  .register .content form .form-group .input-wrapper input#phone {
+    width: 100%;
+  }
 }
 
 .btn {

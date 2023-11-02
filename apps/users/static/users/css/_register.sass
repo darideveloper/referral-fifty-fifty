@@ -3,6 +3,7 @@
     align-items: center
     justify-content: center
     height: calc(100vh - 0px)
+    width: 550px
     
     .content
         h1
@@ -15,17 +16,21 @@
             margin-bottom: 1rem
 
         form
-            width: 550px
+            width: 100%
 
             .form-group
                 display: flex
                 align-items: flex-start
                 justify-content: space-between
 
+                .input-wrapper
+                    input
+                        width: calc(85% - 1.4rem)
+
             .input-wrapper
                 width: 100%
                 margin: 0
-                margin-top: 1rem
+                margin-top: 0.5rem
 
                 label
                     display: block
@@ -39,7 +44,7 @@
                     padding: 0.2rem 1.2rem
                     border-radius: 0.3rem
                     border: 2px solid rgba($color_d, 0.3)
-                    width: calc(85% - 1.4rem)
+                    width: calc(100% - 1.4rem)
 
 
                     &#phone
@@ -54,6 +59,20 @@
                     &:hover
                         background-color: rgba($color_d, 0.05)
 
+                    &::placeholder
+                        color: rgba($color_b, 0.3)
+
+                    &.refferral
+                        width: calc(92% - 1.4rem)
+
+                .form-text
+                    opacity: 0
+                    transition-duration: 0.2s
+                
+                &:hover
+                    .form-text
+                        opacity: 1
+
             .form-text
                 font-size: 0.7rem
                 margin: 0
@@ -65,3 +84,24 @@
 
             .btn.cta
                 margin-top: 1.5rem
+
+    @media screen and (max-width: 700px)
+        width: 80%
+
+    @media screen and (max-width: 560px)
+        .content 
+            form 
+                .form-group
+                    flex-direction: column
+
+                    .input-wrapper
+
+                        .iti 
+                            width: 100%
+                            width: calc(92% - 1.4rem)
+
+                        input
+                            width: calc(92% - 1.4rem)
+
+                            &#phone
+                                width: calc(100%)

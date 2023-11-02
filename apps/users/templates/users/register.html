@@ -38,12 +38,14 @@
 
           <div class="input-wrapper first-name">
             <label for="first-name">First Name</label>
-            <input type="text" name="first-name" id="first-name" required placeholder="John">
+            <input type="text" name="first-name" id="first-name" required placeholder="John" aria-describedby="nameHelp">
+            <p id="nameHelp" class="form-text">Please provide your accurate name so you can redeem your referral commissions!</p>
           </div>
 
           <div class="input-wrapper last-name">
             <label for="last-name">Last Name</label>
-            <input type="text" name="last-name" id="last-name" required placeholder="Smith">
+            <input type="text" name="last-name" id="last-name" required placeholder="Smith" aria-describedby="lastNameHelp">
+            <p id="lastNameHelp" class="form-text">Please provide your accurate name so you can redeem your referral commissions!</p>
           </div>
 
         </div>
@@ -53,7 +55,7 @@
             <label for="email">Email</label>
             <input type="text" name="email" id="email" required placeholder="sample@gmail.com"
               aria-describedby="emailHelp">
-            <p id="emailHelp" class="form-text">Your real email (you will need to verify it)</p>
+            <p id="emailHelp" class="form-text">Providing a valid email address is necessary to join!</p>
           </div>
 
           <div class="input-wrapper phone">
@@ -63,13 +65,30 @@
           </div>
         </div>
 
+        <div class="input-wrapper amazon">
+          <label for="amazon">Amazon refferall code</label>
+          <input class="refferral" type="text" name="amazon" id="amazon" required placeholder="tag=sample-code" aria-describedby="amazonHelp">
+          <p id="amazonHelp" class="form-text">Introduce here you Amazon referral code / How to get your Amazon referral code <a href="#">here</a></p>
+        </div>
+
+        <div class="input-wrapper ebay">
+          <label for="ebay">ebay refferall code</label>
+          <input class="refferral" type="text" name="ebay" id="ebay" required placeholder="mkcid=1&mkrid=123-45678-91012-0&siteid=0&campid=1234567890&customid=&toolid=10001&mkevt=1" aria-describedby="ebayHelp">
+          <p id="amazonHelp" class="form-text">Introduce here you Ebay referral code / How to get your Ebay referral code <a href="#">here</a></p>
+        </div>
+
+        <div class="input-wrapper walmart">
+          <label for="ebay">walmart refferall code</label>
+          <input class="refferral" type="text" name="walmart" id="walmart" required placeholder="tag=sample-code" aria-describedby="walmartHelp">
+          <p id="amazonHelp" class="form-text">Introduce here you Walmart referral code / How to get your Walmart referral code <a href="#">here</a></p>
+        </div>
+
 
         <input type="submit" value="Submit" class="btn cta">
 
         <p class="form-text login">Already have an account? <a href="#">Login</a></p>
 
       </form>
-
 
     </div>
   </main>

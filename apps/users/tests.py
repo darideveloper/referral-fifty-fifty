@@ -1,9 +1,10 @@
+import json
 from django.urls import reverse
 from django.test import TestCase
 from users import models
 from core import models as core_models
 
-class TestReferralByPhoneView (TestCase):
+class TestReferralView (TestCase):
     
     def setUp (self):
         
@@ -35,10 +36,24 @@ class TestReferralByPhoneView (TestCase):
             is_active=True
         )
         
+        # Endpoint url
         self.url = reverse ("referral")
-        self.data = {
+        
+        # Request data
+        self.get_data = {
             "phone": self.user.phone,
             "email": self.user.email
+        }
+        
+        self.post_data = {
+            "name": "test",
+            "last_name": "test",
+            "email": "test@test",
+            "phone": "1234567890",
+            "stores": {
+                self.store.name: "refid=12345",
+                "fake_store": "refid=12345"
+            }
         }
         
         self.client.defaults["HTTP_token"] = self.token.token
@@ -49,13 +64,13 @@ class TestReferralByPhoneView (TestCase):
         """
         
         # Remove phone from data
-        self.data.pop ("phone")
-        self.data.pop ("email")
+        self.get_data.pop ("phone")
+        self.get_data.pop ("email")
         
         # Make request
         response = self.client.get (
             self.url,
-            data=self.data
+            data=self.get_data
         )
         
         # Check response
@@ -72,13 +87,13 @@ class TestReferralByPhoneView (TestCase):
         """
         
         # Change to wrong phone number
-        self.data.pop ("email")
-        self.data["phone"] = "0000000"
+        self.get_data.pop ("email")
+        self.get_data["phone"] = "0000000"
         
         # Make request
         response = self.client.get (
             self.url,
-            data=self.data
+            data=self.get_data
         )
         
         # Check response
@@ -95,14 +110,14 @@ class TestReferralByPhoneView (TestCase):
         """
         
         # Change to wrong phone number
-        self.data.pop ("phone")
-        self.data["email"] = "fake@gmail.com"
+        self.get_data.pop ("phone")
+        self.get_data["email"] = "fake@gmail.com"
         
         
         # Make request
         response = self.client.get (
             self.url,
-            data=self.data
+            data=self.get_data
         )
         
         # Check response
@@ -119,7 +134,7 @@ class TestReferralByPhoneView (TestCase):
         """
         
         # Remove email from data
-        self.data.pop ("email")
+        self.get_data.pop ("email")
         
         # Disable user
         self.user.active = False
@@ -128,7 +143,7 @@ class TestReferralByPhoneView (TestCase):
         # Make request
         response = self.client.get (
             self.url,
-            data=self.data
+            data=self.get_data
         )
         
         # Check response
@@ -145,7 +160,7 @@ class TestReferralByPhoneView (TestCase):
         """
         
         # Remove phone from data
-        self.data.pop ("phone")
+        self.get_data.pop ("phone")
         
         # Disable user
         self.user.active = False
@@ -154,7 +169,7 @@ class TestReferralByPhoneView (TestCase):
         # Make request
         response = self.client.get (
             self.url,
-            data=self.data
+            data=self.get_data
         )
         
         # Check response
@@ -171,12 +186,12 @@ class TestReferralByPhoneView (TestCase):
         """
         
         # Remove email from data
-        self.data.pop ("email")
+        self.get_data.pop ("email")
                 
         # Make request
         response = self.client.get (
             self.url,
-            data=self.data
+            data=self.get_data
         )
         
         # Check response
@@ -195,12 +210,12 @@ class TestReferralByPhoneView (TestCase):
         """
         
         # Remove phone from data
-        self.data.pop ("phone")
+        self.get_data.pop ("phone")
                         
         # Make request
         response = self.client.get (
             self.url,
-            data=self.data
+            data=self.get_data
         )
         
         # Check response

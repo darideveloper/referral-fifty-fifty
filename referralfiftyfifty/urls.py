@@ -11,5 +11,5 @@ admin.site.index_title = "Referral Fifty Fifty"
 urlpatterns = [
     path('', views.index, name='index'),
     path('admin/', admin.site.urls),
-    path('users/', include(users_urls)),
+    path('users/', include(users_urls), name='users'),
 ]

@@ -158,3 +158,29 @@ class Register (View):
         """ render rgister form """
         
         return render (request, "users/register.html")
+    
+    def post (self, request):
+        """ get register data and save user """
+        
+        # Get form data
+        first_name = request.POST.get ("first-name", None)
+        last_name = request.POST.get ("last-name", None)
+        email = request.POST.get ("email", None)
+        phone = request.POST.get ("phone", None)
+        amazon = request.POST.get ("amazon", None)
+        ebay = request.POST.get ("ebay", None)
+        walmart = request.POST.get ("walmart", None)
+        
+        # Save user
+        models.User.objects.create (
+            name=first_name,
+            last_name=last_name,
+            email=email,
+            phone=phone
+        )
+        
+        # # Save stores
+        # if amazon:
+        
+        # # redirect user to home page
+        # return HttpResponseRedirect ("/")

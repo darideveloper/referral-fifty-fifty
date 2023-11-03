@@ -72,19 +72,19 @@
 
         <div class="input-wrapper amazon">
           <label for="amazon">Amazon refferall code</label>
-          <input class="refferral" type="text" name="amazon" id="amazon" required placeholder="tag=sample-code" aria-describedby="amazonHelp">
+          <input class="refferral" type="text" name="amazon" id="amazon" placeholder="tag=sample-code" aria-describedby="amazonHelp">
           <p id="amazonHelp" class="form-text">Introduce here you Amazon referral code / How to get your Amazon referral code <a href="#">here</a></p>
         </div>
 
         <div class="input-wrapper ebay">
-          <label for="ebay">ebay refferall code</label>
-          <input class="refferral" type="text" name="ebay" id="ebay" required placeholder="mkcid=1&mkrid=123-45678-91012-0&siteid=0&campid=1234567890&customid=&toolid=10001&mkevt=1" aria-describedby="ebayHelp">
+          <label for="ebay">Ebay refferall code</label>
+          <input class="refferral" type="text" name="ebay" id="ebay" placeholder="mkcid=1&mkrid=123-45678-91012-0&siteid=0&campid=1234567890&customid=&toolid=10001&mkevt=1" aria-describedby="ebayHelp">
           <p id="amazonHelp" class="form-text">Introduce here you Ebay referral code / How to get your Ebay referral code <a href="#">here</a></p>
         </div>
 
         <div class="input-wrapper walmart">
-          <label for="ebay">walmart refferall code</label>
-          <input class="refferral" type="text" name="walmart" id="walmart" required placeholder="tag=sample-code" aria-describedby="walmartHelp">
+          <label for="ebay">Walmart refferall code</label>
+          <input class="refferral" type="text" name="walmart" id="walmart" placeholder="tag=sample-code" aria-describedby="walmartHelp">
           <p id="amazonHelp" class="form-text">Introduce here you Walmart referral code / How to get your Walmart referral code <a href="#">here</a></p>
         </div>
 
@@ -106,9 +106,13 @@
       utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js",
     });
   </script>
+  
+  <!-- Alerts -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+  <!-- Custom code page -->
   <script src="{% static 'users/code/register.js' %}"></script>
-
+  
 </body>
 
 </html>

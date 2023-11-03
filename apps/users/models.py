@@ -7,7 +7,7 @@ class User(models.Model):
     last_name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
     phone = models.CharField(max_length=255, unique=True)
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

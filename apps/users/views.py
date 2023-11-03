@@ -167,20 +167,41 @@ class Register (View):
         last_name = request.POST.get ("last-name", None)
         email = request.POST.get ("email", None)
         phone = request.POST.get ("phone", None)
-        amazon = request.POST.get ("amazon", None)
-        ebay = request.POST.get ("ebay", None)
-        walmart = request.POST.get ("walmart", None)
+        amazon_code = request.POST.get ("amazon", None)
+        ebay_code = request.POST.get ("ebay", None)
+        walmart_code = request.POST.get ("walmart", None)
         
         # Save user
-        models.User.objects.create (
-            name=first_name,
-            last_name=last_name,
-            email=email,
-            phone=phone
-        )
+        try:
+            user = models.User.objects.create (
+                name=first_name,
+                last_name=last_name,
+                email=email,
+                phone=phone
+            )
+        except Exception as e:
+            print (e)
+            return render (request, "users/register.html", {
+                "error": "Error creating user|Email or phone already exists"
+            })
         
-        # # Save stores
-        # if amazon:
+        # Save referral links
+        stores = {
+            "amazon": amazon_code,
+            "ebay": ebay_code,
+            "walmart": walmart_code
+        }
+        for store_name, store_value in stores.items():
+            if store_value:
+                current_store = models.Store.objects.get (name=store_name)
+                models.ReferralLink.objects.create (
+                    user=user,
+                    store=current_store,
+                    link=store_value
+                )
+                print (f"Saved {store_name} link")
+                
+            
         
-        # # redirect user to home page
-        # return HttpResponseRedirect ("/")
+        # redirect user to home page
+        return HttpResponseRedirect ("/")

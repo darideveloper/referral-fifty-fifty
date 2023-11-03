@@ -112,7 +112,16 @@
 
   <!-- Custom code page -->
   <script src="{% static 'users/code/register.js' %}"></script>
-  
+
+  <!-- get error and info from django -->
+  <script>
+    const error = "{{ error }}"
+    const info = "{{ info }}"
+  </script>
+
+  <!-- Custom alerts from django -->
+  <script src="{% static 'users/code/alerts.js' %}"></script>
+
 </body>
 
 </html>

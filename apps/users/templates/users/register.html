@@ -32,7 +32,12 @@
       <h1>Sign Up</h1>
       <p>Fill in the form to get instant access</p>
 
+      <div class="loading-wrapper hidden transparent">
+        <img class="loading" src="{% static 'users/imgs/spinner.gif' %}" alt="Loading">
+      </div>
+
       <form action="." method="post">
+        {% csrf_token %}
 
         <div class="form-group">
 
@@ -93,6 +98,7 @@
     </div>
   </main>
 
+  <!-- Phone input -->
   <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
   <script>
     const input = document.querySelector("#phone")
@@ -100,6 +106,8 @@
       utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js",
     });
   </script>
+
+  <script src="{% static 'users/code/register.js' %}"></script>
 
 </body>
 

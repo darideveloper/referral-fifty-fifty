@@ -1,9 +1,10 @@
-import json
 from django.views import View
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from users import models 
 from core.wrappers import validate_token
+from django.core.mail import send_mail
+from referralfiftyfifty.settings import EMAIL_HOST_USER, HOST
 
 def index (request):
     return JsonResponse ({
@@ -61,102 +62,12 @@ class Referral (View):
             "message": "User found",
             "data": data
         }, status=200)
-        
-    # @validate_token
-    # def post (self, request):
-    #     """ Save new user in database """
-        
-    #     # Get post data from json
-    #     try:
-    #         json_data = json.loads (request.body)
-    #     except:
-    #         return JsonResponse ({
-    #             "status": "error",
-    #             "message": "Invalid JSON",
-    #             "data": []
-    #         }, status=400)
-            
-    #     name = json_data.get ("name", None)
-    #     last_name = json_data.get ("last_name", None)
-    #     email = json_data.get ("email", None)
-    #     phone = json_data.get ("phone", None)
-    #     stores = json_data.get ("stores", None)
-        
-    #     # stores = {
-    #     #     "store-1": "link",
-    #     #     "store-2": "link"
-    #     # }
-        
-    #     # Validate data
-    #     if not (name and last_name and email and phone and stores):
-    #         return JsonResponse ({
-    #             "status": "error",
-    #             "message": "Missing data",
-    #             "data": {}
-    #         }, status=400)
-            
-    #     # Valide if user already exists
-    #     email_exists = models.User.objects.filter (
-    #         email=email,
-    #     ).count() > 0
-    #     phone_exists = models.User.objects.filter (
-    #         phone=phone,
-    #     ).count() > 0
-        
-    #     if phone_exists or email_exists:
-    #         return JsonResponse ({
-    #             "status": "error",
-    #             "message": "User already exists",
-    #             "data": {}
-    #         }, status=400)
-            
-    #     # Create user in database
-    #     try:
-    #         user = models.User.objects.create (
-    #             name=name,
-    #             last_name=last_name,
-    #             email=email,
-    #             phone=phone,
-    #             active=True
-    #         )
-    #     except:
-    #         return JsonResponse ({
-    #             "status": "error",
-    #             "message": "Error creating user",
-    #             "data": {}
-    #         }, status=400)
-        
-    #     # Validate stores data type
-    #     if not isinstance (stores, dict):
-    #         return JsonResponse ({
-    #             "status": "error",
-    #             "message": "Invalid stores data type",
-    #             "data": {}
-    #         }, status=400)
-        
-    #     # Save refreral links
-    #     for store_name, link in stores.items():
-            
-    #         # Query store and skip if not exists
-    #         store = models.Store.objects.filter (name=store_name.lower())
-    #         if not store:
-    #             continue
-            
-    #         # Save link
-    #         store = store.first()
-    #         models.ReferralLink.objects.create (
-    #             user=user,
-    #             store=store,
-    #             link=link
-    #         )
-            
 
 class Register (View):
     """ Register form to referral users """
     
     def get (self, request): 
-        """ render rgister form """
-        
+        """ render rgister form """        
         return render (request, "users/register.html")
     
     def post (self, request):
@@ -171,6 +82,12 @@ class Register (View):
         ebay_code = request.POST.get ("ebay", None)
         walmart_code = request.POST.get ("walmart", None)
         
+        # Validate requiered data
+        if not (first_name and last_name and email and phone):
+            return render (request, "users/register.html", {
+                "error": "Missing data|First name, last name, email and phone are required"
+            })
+        
         # Save user
         try:
             user = models.User.objects.create (
@@ -180,6 +97,7 @@ class Register (View):
                 phone=phone
             )
         except Exception as e:
+            # Catch duplicated users
             print (e)
             return render (request, "users/register.html", {
                 "error": "Error creating user|Email or phone already exists"
@@ -199,9 +117,18 @@ class Register (View):
                     store=current_store,
                     link=store_value
                 )
-                print (f"Saved {store_name} link")
-                
-            
         
+        # Submit activation link by email
+        activation_link = f"{HOST}/activate-account/{user.id}"
+        send_mail(
+            "Complete your registration",
+            f"Click here to complete your registration: {activation_link}",
+            EMAIL_HOST_USER,
+            [email],
+            fail_silently=False,
+        )
+         
         # redirect user to home page
-        return HttpResponseRedirect ("/")
+        return render (request, "users/register.html", {
+            "info": "We are almost done|Check your email to complete your registration"
+        })

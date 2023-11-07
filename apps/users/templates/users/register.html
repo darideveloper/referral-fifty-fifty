@@ -1,127 +1,95 @@
+{% extends "./template.html" %}
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Refferall 50 - 50</title>
+{% block content %}
+<div class="content">
 
-  <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
-
-  <!-- Phone code css -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
-
-  <!-- Goiogle fornts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rospanoto+Condensed:wght@400;700&family=Yeseva+One&display=swap"
-    rel="stylesheet">
-
-  <!-- Favicon -->
-  <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
-
-</head>
-
-<body>
-  <main class="register container">
-
-    <div class="content">
-
-      <h1>Sign Up</h1>
-      <p>Fill in the form to get instant access</p>
-
-      <div class="loading-wrapper hidden transparent">
-        <img class="loading" src="{% static 'users/imgs/spinner.gif' %}" alt="Loading">
-      </div>
-
-      <form action="." method="post">
-        {% csrf_token %}
-
-        <div class="form-group">
-
-          <div class="input-wrapper first-name">
-            <label for="first-name">First Name</label>
-            <input type="text" name="first-name" id="first-name" required placeholder="John" aria-describedby="nameHelp">
-            <p id="nameHelp" class="form-text">Please provide your accurate name so you can redeem your referral commissions!</p>
-          </div>
-
-          <div class="input-wrapper last-name">
-            <label for="last-name">Last Name</label>
-            <input type="text" name="last-name" id="last-name" required placeholder="Smith" aria-describedby="lastNameHelp">
-            <p id="lastNameHelp" class="form-text">Please provide your accurate name so you can redeem your referral commissions!</p>
-          </div>
-
-        </div>
-
-        <div class="form-group">
-          <div class="input-wrapper email">
-            <label for="email">Email</label>
-            <input type="text" name="email" id="email" required placeholder="sample@gmail.com"
-              aria-describedby="emailHelp">
-            <p id="emailHelp" class="form-text">Providing a valid email address is necessary to join!</p>
-          </div>
-
-          <div class="input-wrapper phone">
-            <label for="phone">Phone Number</label>
-            <input type="tel" name="phone" id="phone" required placeholder="332646917" aria-describedby="phoneHelp">
-            <p id="phoneHelp" class="form-text">Your phone number with country code</p>
-          </div>
-        </div>
-
-        <div class="input-wrapper amazon">
-          <label for="amazon">Amazon refferall code</label>
-          <input class="refferral" type="text" name="amazon" id="amazon" placeholder="tag=sample-code" aria-describedby="amazonHelp">
-          <p id="amazonHelp" class="form-text">Introduce here you Amazon referral code / How to get your Amazon referral code <a href="#">here</a></p>
-        </div>
-
-        <div class="input-wrapper ebay">
-          <label for="ebay">Ebay refferall code</label>
-          <input class="refferral" type="text" name="ebay" id="ebay" placeholder="mkcid=1&mkrid=123-45678-91012-0&siteid=0&campid=1234567890&customid=&toolid=10001&mkevt=1" aria-describedby="ebayHelp">
-          <p id="amazonHelp" class="form-text">Introduce here you Ebay referral code / How to get your Ebay referral code <a href="#">here</a></p>
-        </div>
-
-        <div class="input-wrapper walmart">
-          <label for="ebay">Walmart refferall code</label>
-          <input class="refferral" type="text" name="walmart" id="walmart" placeholder="tag=sample-code" aria-describedby="walmartHelp">
-          <p id="amazonHelp" class="form-text">Introduce here you Walmart referral code / How to get your Walmart referral code <a href="#">here</a></p>
-        </div>
-
-
-        <input type="submit" value="Submit" class="btn cta">
-
-        <p class="form-text login">Already have an account? <a href="#">Login</a></p>
-
-      </form>
-
-    </div>
-  </main>
-
-  <!-- Phone input -->
-  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
-  <script>
-    const input = document.querySelector("#phone")
-    window.intlTelInput(input, {
-      utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js",
-    });
-  </script>
+  <h1>Sign Up</h1>
+  <p>Fill in the form to get instant access</p>
   
-  <!-- Alerts -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <div class="loading-wrapper hidden transparent">
+    <img class="loading" src="{% static 'users/imgs/spinner.gif' %}" alt="Loading">
+  </div>
+  
+  <form action="." method="post">
+    {% csrf_token %}
+  
+    <div class="form-group">
+  
+      <div class="input-wrapper first-name">
+        <label for="first-name">First Name</label>
+        <input type="text" name="first-name" id="first-name" required placeholder="John" aria-describedby="nameHelp">
+        <p id="nameHelp" class="form-text">Please provide your accurate name so you can redeem your referral
+          commissions!</p>
+      </div>
+  
+      <div class="input-wrapper last-name">
+        <label for="last-name">Last Name</label>
+        <input type="text" name="last-name" id="last-name" required placeholder="Smith" aria-describedby="lastNameHelp">
+        <p id="lastNameHelp" class="form-text">Please provide your accurate name so you can redeem your referral
+          commissions!</p>
+      </div>
+  
+    </div>
+  
+    <div class="form-group">
+      <div class="input-wrapper email">
+        <label for="email">Email</label>
+        <input type="text" name="email" id="email" required placeholder="sample@gmail.com" aria-describedby="emailHelp">
+        <p id="emailHelp" class="form-text">Providing a valid email address is necessary to join!</p>
+      </div>
+  
+      <div class="input-wrapper phone">
+        <label for="phone">Phone Number</label>
+        <input type="tel" name="phone" id="phone" required placeholder="332646917" aria-describedby="phoneHelp">
+        <p id="phoneHelp" class="form-text">Your phone number with country code</p>
+      </div>
+    </div>
+  
+    <div class="input-wrapper amazon">
+      <label for="amazon">Amazon refferall code</label>
+      <input class="refferral" type="text" name="amazon" id="amazon" placeholder="tag=sample-code"
+        aria-describedby="amazonHelp">
+      <p id="amazonHelp" class="form-text">Introduce here you Amazon referral code / How to get your Amazon referral
+        code <a href="#">here</a></p>
+    </div>
+  
+    <div class="input-wrapper ebay">
+      <label for="ebay">Ebay refferall code</label>
+      <input class="refferral" type="text" name="ebay" id="ebay"
+        placeholder="mkcid=1&mkrid=123-45678-91012-0&siteid=0&campid=1234567890&customid=&toolid=10001&mkevt=1"
+        aria-describedby="ebayHelp">
+      <p id="amazonHelp" class="form-text">Introduce here you Ebay referral code / How to get your Ebay referral code <a
+          href="#">here</a></p>
+    </div>
+  
+    <div class="input-wrapper walmart">
+      <label for="ebay">Walmart refferall code</label>
+      <input class="refferral" type="text" name="walmart" id="walmart" placeholder="tag=sample-code"
+        aria-describedby="walmartHelp">
+      <p id="amazonHelp" class="form-text">Introduce here you Walmart referral code / How to get your Walmart referral
+        code <a href="#">here</a></p>
+    </div>
+  
+  
+    <input type="submit" value="Submit" class="btn cta">
+  
+    <p class="form-text login">Already have an account? <a href="#">Login</a></p>
+  
+  </form>
+</div>
+{% endblock %}
 
-  <!-- Custom code page -->
-  <script src="{% static 'users/code/register.js' %}"></script>
-
-  <!-- get error and info from django -->
-  <script>
-    const error = "{{ error }}"
-    const info = "{{ info }}"
-  </script>
-
-  <!-- Custom alerts from django -->
-  <script src="{% static 'users/code/alerts.js' %}"></script>
-
-</body>
-
-</html>
+{% block extrajs %}
+<!-- Phone input -->
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
+<script>
+  const input = document.querySelector("#phone")
+  window.intlTelInput(input, {
+    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js",
+  });
+</script>
+{% endblock %} 

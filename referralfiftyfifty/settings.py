@@ -17,7 +17,6 @@ from dotenv import load_dotenv
 
 ENV = "dev"
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -158,3 +157,6 @@ FILE_UPLOAD_HANDLERS = [
 
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
+    
+# Project host
+HOST = os.environ.get("HOST")

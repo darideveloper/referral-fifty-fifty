@@ -11,3 +11,5 @@ urlpatterns = [
     path('', include(users_urls), name='users'),
     path('admin/', admin.site.urls),
 ]
+
+handler404 = 'apps.users.views.error404'

@@ -6,13 +6,24 @@ from core.wrappers import validate_token
 from django.core.mail import send_mail
 from referralfiftyfifty.settings import EMAIL_HOST_USER, HOST
 
-def index (request):
-    return JsonResponse ({
-        "status": "success", 
-        "message": "Welcome to Referral Fifty Fifty", 
-        "data": {}
-    }, status=200)
-
+class Index (View):
+    """ Home wep app page """
+    
+    def get (self, request): 
+        """ render home template """               
+        return render (request, "users/index.html")
+    
+def error404(request, exception):
+    """ Error 404 page """
+    return render(request, 'users/404.html', status=404, context={
+        "subtitle": "error",
+    })
+    
+def error404Preview(request):
+    """ Error 404 page """
+    return render(request, 'users/404.html', status=404, context={
+        "subtitle": "error",
+    })
 
 class Referral (View):
     """ Referral links search user by phone number """
@@ -66,9 +77,14 @@ class Referral (View):
 class Register (View):
     """ Register form to referral users """
     
-    def get (self, request): 
+    subtitle = "register"
+    default_script = True
+    
+    def get (self, request):         
         """ render rgister form """        
-        return render (request, "users/register.html")
+        return render (request, "users/register.html", {
+            "subtitle": Register.subtitle
+        })
     
     def post (self, request):
         """ get register data and save user """
@@ -85,7 +101,9 @@ class Register (View):
         # Validate requiered data
         if not (first_name and last_name and email and phone):
             return render (request, "users/register.html", {
-                "error": "Missing data|First name, last name, email and phone are required"
+                "error": "Missing data|First name, last name, email and phone are required",
+                "subtitle": Register.subtitle,
+                "default_script": Register.default_script
             })
         
         # Save user
@@ -100,7 +118,9 @@ class Register (View):
             # Catch duplicated users
             print (e)
             return render (request, "users/register.html", {
-                "error": "Error creating user|Email or phone already exists"
+                "error": "Error creating user|Email or phone already exists",
+                "subtitle": Register.subtitle,
+                "default_script": Register.default_script
             })
         
         # Save referral links
@@ -119,7 +139,7 @@ class Register (View):
                 )
         
         # Submit activation link by email
-        activation_link = f"{HOST}/activate-account/{user.id}"
+        activation_link = f"{HOST}/activate/{user.hash}"
         send_mail(
             "Complete your registration",
             f"Click here to complete your registration: {activation_link}",
@@ -130,5 +150,33 @@ class Register (View):
          
         # redirect user to home page
         return render (request, "users/register.html", {
-            "info": "We are almost done|Check your email to complete your registration"
+            "info": "We are almost done|Check your email to complete your registration",
+            "subtitle": Register.subtitle,
+            "default_script": Register.default_script
+        })
+        
+class Activate (View):
+    """ Activate account already created """
+    
+    def get (self, request, hash): 
+        """ render rgister form """        
+        
+        # Get user by hash
+        users_match = models.User.objects.filter(hash=hash)
+        if not users_match:
+            # redirect to not found
+            return HttpResponseRedirect ("/404")
+        
+        user = users_match.first()
+        
+        # Activate user
+        user.active = True
+        
+        # Save login cookie
+        request.session["user"] = user.id
+        
+        # Render success template       
+        return render (request, "users/activate.html", {
+            "subtitle": "Activate",
+            "name": user.name
         })

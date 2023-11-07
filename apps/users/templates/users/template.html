@@ -1,0 +1,57 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Refferall 50 - 50 {% if subtitle %}| {{subtitle|title}}{% endif %}</title>
+
+  <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
+
+  <!-- Phone code css -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
+
+  <!-- Goiogle fornts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rospanoto+Condensed:wght@400;700&family=Yeseva+One&display=swap"
+    rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+
+  {% block extrahead %}
+  {% endblock %}
+</head>
+
+<body>
+  <main class="{{subtitle}} container">
+    {% block content %}
+    {% endblock %}
+  </main>
+  
+  <!-- Alerts -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Custom code page -->
+  {% if default_script %}
+    <script src="{% static 'users/code/{{subtitle}}.js' %}"></script>
+  {% endif %}
+
+  <!-- get error and info from django -->
+  <script>
+    const error = "{{ error }}"
+    const info = "{{ info }}"
+  </script>
+
+  <!-- Custom alerts from django -->
+  <script src="{% static 'users/code/alerts.js' %}"></script>
+
+  {% block extrajs %}
+  {% endblock %}
+
+</body>
+
+</html>

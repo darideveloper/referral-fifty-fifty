@@ -180,6 +180,7 @@ class Activate (View):
         
         # Activate user
         user.active = True
+        user.save ()
         
         # Save login cookie
         request.session["user"] = user.id

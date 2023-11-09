@@ -1,7 +1,7 @@
 body {
   font-family: "Roboto Condensed", sans-serif;
   margin: 0;
-  padding: 0;
+  padding: 0 10px;
 }
 
 .debug {
@@ -302,6 +302,10 @@ main.error {
 main.error h1 {
   margin: 0;
   padding: 0;
+}
+
+.activate {
+  height: calc(100vh - 150px - 143px);
 }
 
 /*# sourceMappingURL=style.css.map */

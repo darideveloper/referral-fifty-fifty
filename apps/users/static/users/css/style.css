@@ -30,6 +30,16 @@ p {
   opacity: 0 !important;
 }
 
+a {
+  text-decoration: none;
+  color: #212A3E;
+  font-weight: bold;
+  transition-duration: 0.1s;
+}
+a:hover {
+  color: rgba(57, 72, 103, 0.5);
+}
+
 #header {
   display: flex;
   align-items: center;
@@ -71,13 +81,6 @@ p {
 }
 #header nav ul li a {
   padding: 10px;
-  text-decoration: none;
-  color: #212A3E;
-  font-weight: bold;
-  transition-duration: 0.1s;
-}
-#header nav ul li a:hover {
-  color: rgba(57, 72, 103, 0.5);
 }
 @media screen and (max-width: 500px) {
   #header {
@@ -115,6 +118,48 @@ p {
 .btn.cta:hover {
   background-color: rgba(57, 72, 103, 0);
   color: #394867;
+}
+
+#footer {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 5px;
+  margin-top: 60px;
+  font-size: 0.8rem;
+  bottom: 0;
+  left: 0;
+}
+#footer.absolute {
+  position: absolute;
+}
+#footer a {
+  font-weight: bold;
+  transition-duration: 0.2s;
+}
+#footer a:hover {
+  color: rgba(57, 72, 103, 0.7);
+}
+#footer p {
+  margin: 0;
+}
+#footer .links {
+  width: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.8rem auto;
+}
+#footer > * {
+  margin: 0.8rem 0;
+}
+@media screen and (max-width: 550px) {
+  #footer .links {
+    flex-direction: column;
+    width: 100%;
+  }
+  #footer .links a {
+    padding: 5px;
+  }
 }
 
 .register {

@@ -55,13 +55,38 @@
     {% block content %}
     {% endblock %}
   </main>
-  
+
+  <footer id="footer">
+    <p>
+      Comments and suggestions:
+    </p>
+
+    <div class="email">
+      <a href="mail:comments@price-checker.us">
+        comments@referral-fifty-fifty.com
+      </a>
+    </div>
+
+    <div class="links">
+      <a href="./legals" target="_blank">
+        Legals
+      </a>
+      <a href="./legal-framework" target="_blank">
+        Legal framework
+      </a>
+      <p>
+        © 2023 referral-fifty-fifty.com
+      </p>
+    </div>
+    </p>
+  </footer>
+
   <!-- Alerts -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <!-- Custom code page -->
   {% if default_script %}
-    <script src="{% static 'users/code/{{subtitle}}.js' %}"></script>
+  <script src="{% static 'users/code/{{subtitle}}.js' %}"></script>
   {% endif %}
 
   <!-- get error and info from django -->

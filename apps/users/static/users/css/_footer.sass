@@ -1,0 +1,41 @@
+#footer
+    width: 100%
+    text-align: center
+    margin-bottom: 5px
+    margin-top: 60px
+    font-size: 0.8rem
+    bottom: 0
+    left: 0
+
+    &.absolute
+        position: absolute
+
+    a
+        font-weight: bold
+        transition-duration: 0.2s
+
+        &:hover
+            color: rgba($color_b, 0.7)
+
+    p
+        margin: 0
+
+    .links
+        width: 340px
+        display: flex
+        align-items: center
+        justify-content: space-between
+        margin: 0.8rem auto
+
+    > *
+        margin: 0.8rem 0
+
+
+    @media screen and (max-width: 550px)
+
+        .links
+            flex-direction: column
+            width: 100%
+
+            a
+                padding: 5px

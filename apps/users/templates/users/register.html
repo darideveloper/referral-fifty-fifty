@@ -44,7 +44,7 @@
   
       <div class="input-wrapper phone">
         <label for="phone">Phone Number</label>
-        <input type="tel" name="phone" id="phone" required placeholder="332646917" aria-describedby="phoneHelp">
+        <input type="text" name="phone" id="phone" required placeholder="(718) 555-567" aria-describedby="phoneHelp" pattern="^(?:\+\d{1,3}|0\d{1,3}|00\d{1,2})?(?:\s?\(\d+\))?(?:[-\/\s.]*\d){8,}$" >
         <p id="phoneHelp" class="form-text">Your phone number with country code</p>
       </div>
     </div>

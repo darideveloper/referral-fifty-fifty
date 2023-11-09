@@ -166,7 +166,7 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - 0px);
+  min-height: calc(80vh - 0px);
   width: 550px;
 }
 .register .content {

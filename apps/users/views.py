@@ -3,7 +3,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from users import models 
 from core.wrappers import validate_token
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
 from referralfiftyfifty.settings import EMAIL_HOST_USER, HOST
 
 class Index (View):
@@ -140,14 +141,22 @@ class Register (View):
         
         # Submit activation link by email
         activation_link = f"{HOST}/activate/{user.hash}"
-        send_mail(
+        if activation_link.startswith("localhost"):
+            activation_link_href = f"http://{activation_link}"
+        else:
+            activation_link_href = f"https://{activation_link}"    
+        
+        html_content = f'<p>Click here to complete your registration: <a href="{activation_link_href}"> {activation_link}</p>'
+        text_content = strip_tags(html_content)
+        msg = EmailMultiAlternatives(
             "Complete your registration",
-            f"Click here to complete your registration: {activation_link}",
+            text_content,
             EMAIL_HOST_USER,
             [email],
-            fail_silently=False,
         )
-         
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+            
         # redirect user to home page
         return render (request, "users/register.html", {
             "info": "We are almost done|Check your email to complete your registration",

@@ -30,6 +30,93 @@ p {
   opacity: 0 !important;
 }
 
+#header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 30px;
+  margin-bottom: 50px;
+}
+#header .logo {
+  height: 80px;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+#header .logo img {
+  height: 100%;
+  margin-right: 20px;
+}
+#header .logo p {
+  color: #212A3E;
+  font-size: 2rem;
+  margin: 0;
+  display: inline-block;
+  font-weight: bold;
+}
+#header nav {
+  width: 200px;
+}
+#header nav ul {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+#header nav ul li {
+  list-style: none;
+  margin: 5px;
+}
+#header nav ul li a {
+  padding: 10px;
+  text-decoration: none;
+  color: #212A3E;
+  font-weight: bold;
+  transition-duration: 0.1s;
+}
+#header nav ul li a:hover {
+  color: rgba(57, 72, 103, 0.5);
+}
+@media screen and (max-width: 500px) {
+  #header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  #header .logo {
+    margin-bottom: 30px;
+  }
+  #header .logo p {
+    font-size: 1.5rem;
+  }
+  #header nav ul {
+    justify-content: center;
+  }
+}
+
+.btn {
+  border: none;
+  background: none;
+  display: inline-block;
+}
+.btn.cta {
+  color: #F1F6F9;
+  background-color: #394867;
+  padding: 0.5rem 3rem;
+  border-radius: 0.3rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border: 4px solid #394867;
+  transition-duration: 0.2s;
+  font-weight: bold;
+}
+.btn.cta:hover {
+  background-color: rgba(57, 72, 103, 0);
+  color: #394867;
+}
+
 .register {
   display: flex;
   align-items: center;
@@ -153,27 +240,6 @@ p {
   .register .content form .form-group .input-wrapper input#phone {
     width: 100%;
   }
-}
-
-.btn {
-  border: none;
-  background: none;
-  display: inline-block;
-}
-.btn.cta {
-  color: #F1F6F9;
-  background-color: #394867;
-  padding: 0.5rem 3rem;
-  border-radius: 0.3rem;
-  font-size: 1.1rem;
-  cursor: pointer;
-  border: 4px solid #394867;
-  transition-duration: 0.2s;
-  font-weight: bold;
-}
-.btn.cta:hover {
-  background-color: rgba(57, 72, 103, 0);
-  color: #394867;
 }
 
 main.error {

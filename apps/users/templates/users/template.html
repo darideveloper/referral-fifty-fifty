@@ -27,6 +27,30 @@
 </head>
 
 <body>
+
+  <header id="header" class="container">
+    <div class="logo">
+      <img src="{% static 'users/imgs/logo.png' %}" alt="Refferal Fifty Fifty logo">
+      <p class="title">Referral <br> 50/50</p>
+    </div>
+    <nav class="">
+      <ul class="">
+        {% if logged %}
+        <li>
+          <a href="/logout">Logout</a>
+        </li>
+        {% else %}
+        <li>
+          <a href="/register">Sign Up</a>
+        </li>
+        <li>
+          <a href="/login">Login</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+
   <main class="{{subtitle}} container">
     {% block content %}
     {% endblock %}

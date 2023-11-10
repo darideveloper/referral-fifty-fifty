@@ -406,6 +406,6 @@ class TestRegisterView (TestCase):
         # Validate email content
         email = mail.outbox[0]
         self.assertEqual(email.subject, 'Complete your registration')
-        activation_link = f"{HOST}/activate-account/{user.hash}"
-        message = f"Click here to complete your registration: {activation_link}"
+        activation_link = f"{HOST}/activate/{user.hash}"
+        message = f"Click here to complete your registration:  {activation_link}"
         self.assertEqual(email.body, message)

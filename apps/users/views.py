@@ -3,9 +3,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from users import models 
 from core.wrappers import validate_token
-from django.core.mail import EmailMultiAlternatives
-from django.utils.html import strip_tags
-from referralfiftyfifty.settings import EMAIL_HOST_USER, HOST
+from referralfiftyfifty.settings import HOST
+from core.emails import submit_email
 
 class Index (View):
     """ Home wep app page """
@@ -141,21 +140,8 @@ class Register (View):
         
         # Submit activation link by email
         activation_link = f"{HOST}/activate/{user.hash}"
-        if activation_link.startswith("localhost"):
-            activation_link_href = f"http://{activation_link}"
-        else:
-            activation_link_href = f"https://{activation_link}"    
-        
-        html_content = f'<p>Click here to complete your registration: <a href="{activation_link_href}"> {activation_link}</p>'
-        text_content = strip_tags(html_content)
-        msg = EmailMultiAlternatives(
-            "Complete your registration",
-            text_content,
-            EMAIL_HOST_USER,
-            [email],
-        )
-        msg.attach_alternative(html_content, "text/html")
-        msg.send()
+        html_content = f'<p>Click here to complete your registration: <a href="{activation_link}"> {activation_link}</p>'
+        submit_email ("Complete your registration", html_content, email)
             
         # redirect user to home page
         return render (request, "users/register.html", {
@@ -190,3 +176,69 @@ class Activate (View):
             "subtitle": "Activate",
             "name": user.name
         })
+        
+class Login (View):
+    """ Login with dynamic link by email """
+    
+    subtitle = "login"
+    default_script = True
+    
+    def get (self, request): 
+        """ render rgister form """        
+          
+        # Render success template       
+        return render (request, "users/login.html", {
+            "subtitle": Login.subtitle,
+            "default_script": Login.default_script
+        })
+    
+    def post (self, request):
+        """ Validate login """
+        
+        # Get email from post data
+        email = request.POST.get ("email", None)
+        
+        # Validate user
+        users_match = models.User.objects.filter(email=email, active=True)
+        if not users_match:
+            
+            # reaload page with error
+            return render (request, "users/login.html", {
+                "error": "Email not found|Please check your email and try again",
+                "subtitle": Login.subtitle,
+                "default_script": Login.default_script
+            })
+            
+        user = users_match.first()
+        
+        # Submit magic login link
+        login_code = models.LoginCodes.objects.create (
+            user=user
+        )
+        login_link = f"{HOST}/login-code/{login_code.hash}"        
+        html_content = f'<p>Click here to login: <a href="{login_link}"> {login_link}</p>'
+        submit_email ("Login link referral fifty fifty", html_content, email)
+        
+        return render (request, "users/login.html", {
+            "info": "Check you email|We send you a magic link to login",
+            "subtitle": Login.subtitle,
+            "default_script": Login.default_script
+        })
+        
+# # Get login code
+# login_code_math = models.LoginCodes.objects.filter(hash=hash)
+# if not login_code_math:
+#     # redirect to not found
+#     return HttpResponseRedirect ("/404")
+
+# user = login_code_math.first().user
+
+# # Validate if the user is activate
+
+
+# # Activate user
+# user.active = True
+# user.save ()
+
+# # Save login cookie
+# request.session["user"] = user.id

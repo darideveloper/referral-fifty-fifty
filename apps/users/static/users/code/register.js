@@ -1,5 +1,4 @@
 const form = document.querySelector('form')
-const loadingWrapper = document.querySelector('.loading-wrapper')
 const countryInput = document.querySelector('.iti__selected-flag')
 const phoneInput = document.querySelector('#phone')
 const storesInputs = document.querySelectorAll('.refferral')
@@ -57,11 +56,7 @@ form.addEventListener('submit', (event) => {
     }
   }
 
-  // Show loading
-  loadingWrapper.classList.remove('hidden')
-  setTimeout(() => {
-    loadingWrapper.classList.remove ("transparent")
-  }, 100)
+  showLoading ()
 
   // Get title of country code
   const country = countryInput.getAttribute ('title')
@@ -74,5 +69,5 @@ form.addEventListener('submit', (event) => {
   // Submit form
   setTimeout(() => {
     form.submit()
-  }, 100)
+  }, 500)
 })

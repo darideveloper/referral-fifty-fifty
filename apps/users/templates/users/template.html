@@ -52,6 +52,9 @@
   </header>
 
   <main class="{{subtitle}} container">
+    <div class="loading-wrapper hidden transparent">
+      <img class="loading" src="{% static 'users/imgs/spinner.gif' %}" alt="Loading">
+    </div>
     {% block content %}
     {% endblock %}
   </main>
@@ -84,22 +87,26 @@
   <!-- Alerts -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <!-- Custom code page -->
-  {% if default_script %}
-  <script src="{% static 'users/code/{{subtitle}}.js' %}"></script>
-  {% endif %}
-
+  
   <!-- get error and info from django -->
   <script>
     const error = "{{ error }}"
     const info = "{{ info }}"
   </script>
-
+  
   <!-- Custom alerts from django -->
   <script src="{% static 'users/code/alerts.js' %}"></script>
 
+  <!-- manage loading spinner -->
+  <script src="{% static 'users/code/loading.js' %}"></script>
+    
   {% block extrajs %}
   {% endblock %}
+
+  <!-- Custom code page -->
+  {% if default_script %}
+  <script src="{% static 'users/code/'|add:subtitle|add:'.js' %}"></script>
+  {% endif %}
 
 </body>
 

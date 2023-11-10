@@ -1,0 +1,21 @@
+{% extends "./template.html" %}
+
+{% block content %}
+<div class="content">
+  <h1>Login</h1>
+  <p>Magic link access: Please enter your registered email, and we'll send you the link to access your member area.</p> 
+  <form action="." method="post">
+    
+    {% csrf_token %}
+
+    <div class="input-wrapper email">
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" placeholder="sample@gmail.com" aria-describedby="emailHelp" required>
+      <p id="emailHelp" class="form-text">The same email you used to register</p>
+    </div>
+    
+    <input type="submit" value="Submit" class="btn cta">
+    <p>You are not registered yet? <a href="/register">Sign Up</a></p>
+  </form>
+</div>
+{% endblock %}

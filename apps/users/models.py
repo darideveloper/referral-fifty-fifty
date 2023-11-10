@@ -38,3 +38,15 @@ class ReferralLink (models.Model):
     
     def __str__ (self):
         return f"{self.user} - {self.store} ({self.link})"
+    
+class LoginCodes (models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    hash = models.CharField(max_length=64)
+    
+    def save (self, *args, **kwargs):
+        
+        if not self.hash:
+            self.hash = secrets.token_hex(32)
+            
+        super().save(*args, **kwargs)

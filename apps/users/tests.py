@@ -324,7 +324,7 @@ class TestRegisterView (TestCase):
         )
         
         # Validate error in html
-        error_message = 'const error = "Error creating user|Email or phone already exists"'
+        error_message = 'const error = "Error creating user|Email or phone already exists. Do not forget to activate your email with the link we sent you after signing up."'
         html_text = response.content.decode('utf-8')
         self.assertIn (error_message, html_text)
     
@@ -351,7 +351,7 @@ class TestRegisterView (TestCase):
         )
         
         # Validate error in html
-        error_message = 'const error = "Error creating user|Email or phone already exists"'
+        error_message = 'const error = "Error creating user|Email or phone already exists. Do not forget to activate your email with the link we sent you after signing up."'
         html_text = response.content.decode('utf-8')
         self.assertIn (error_message, html_text)
         
@@ -408,4 +408,172 @@ class TestRegisterView (TestCase):
         self.assertEqual(email.subject, 'Complete your registration')
         activation_link = f"{HOST}/activate/{user.hash}"
         message = f"Click here to complete your registration:  {activation_link}"
+        self.assertEqual(email.body, message)
+        
+class TestActivateView (TestCase):
+
+    def setUp(self):
+        
+        # Create user
+        self.user = models.User.objects.create (
+            name="test",
+            last_name="test",
+            email=EMAIL_HOST_USER,
+            phone="1234567890",
+        )
+        
+    def test_invalid_hash (self):
+        """ Try to open activate page with invalid hash 
+            Expected: redirect to 404 page
+        """
+        
+        # Make request
+        response = self.client.get (
+            reverse("activate", kwargs={"hash": "invalid_hash"})
+        )
+        
+        # Validate response redirect to 404 page
+        self.assertEqual (response.status_code, 302)
+        
+        # Validate user keep inactive
+        self.assertEqual (self.user.active, False)
+        
+    def test_valid_hash (self): 
+        """ Try to open activate page with valid hash 
+            Expected: activate user and show success message
+        """
+                
+        # Make request
+        response = self.client.get (
+            reverse("activate", kwargs={"hash": self.user.hash})
+        )
+        
+        # Validate response
+        self.assertEqual (response.status_code, 200)
+        
+        # Validate user keep inactive
+        self.assertEqual (self.user.active, False)
+        
+        # Validate html content
+        title = '<h1>Your accout is now active</h1>'
+        link = '/login'
+        html_text = response.content.decode('utf-8')
+        self.assertIn (title, html_text)
+        self.assertIn (link, html_text)
+        
+        
+class TestLoginView (TestCase):
+    
+    def setUp(self):
+        
+        # Create user
+        self.user = models.User.objects.create (
+            name="test",
+            last_name="test",
+            email=EMAIL_HOST_USER,
+            phone="1234567890",
+            active=True
+        )
+        
+        self.url = reverse("login")
+        
+        self.form_data = {
+            "email": EMAIL_HOST_USER,
+        }
+        
+    def test_get (self):
+        """ Try load login page """
+        
+        # make request
+        response = self.client.get (
+            self.url
+        )
+        
+        # Validate response
+        self.assertEqual (response.status_code, 200)
+        
+        # Validate html content
+        title = '<h1>Login</h1>'
+        form = '<form action="." method="post">'
+        input_email = '<input type="email" name="email" id="email" placeholder="sample@gmail.com" aria-describedby="emailHelp" required>'
+        html_text = response.content.decode('utf-8')
+        self.assertIn (title, html_text)
+        self.assertIn (form, html_text)
+        self.assertIn (input_email, html_text)
+        
+    def test_post_invalid_email (self):
+        """ Try to login with no registered email 
+            Expected: error message
+        """
+        
+        # Change email
+        self.form_data["email"] = "fake@gmail.com"
+        
+        # make request
+        response = self.client.post (
+            self.url,
+            data=self.form_data
+        )
+        
+        # Validate response
+        self.assertEqual (response.status_code, 200)
+        
+        # Validate html content
+        error_message = 'const error = "Email not found|Please check your email and try again"'
+        html_text = response.content.decode('utf-8')
+        self.assertIn (error_message, html_text)
+    
+    def test_post_no_activate_email (self):
+        """ Try to login with no activate account
+            Expected: error message
+        """
+        
+        # Diable user
+        self.user.active = False
+        self.user.save()
+        
+        # make request
+        response = self.client.post (
+            self.url,
+            data=self.form_data
+        )
+        
+        # Validate response
+        self.assertEqual (response.status_code, 200)
+        
+        # Validate html content
+        error_message = 'const error = "Email not found|Please check your email and try again"'
+        html_text = response.content.decode('utf-8')
+        self.assertIn (error_message, html_text)
+    
+    def test_post_success (self):
+        """ Try to login with correct email and valid account
+            Expected: confirm email message
+        """
+        
+          # make request
+        response = self.client.post (
+            self.url,
+            data=self.form_data
+        )
+        
+        # Validate response
+        self.assertEqual (response.status_code, 200)
+        
+        # Validate html content
+        error_message = 'const info = "Check you email|We send you a magic link to login"'
+        html_text = response.content.decode('utf-8')
+        self.assertIn (error_message, html_text)
+        
+        # Validate number of emails sent
+        self.assertEqual(len(mail.outbox), 1)
+        
+        # Validate email content
+        email = mail.outbox[0]
+        login_code = models.LoginCodes.objects.filter (
+            user=self.user
+        ).first()
+        self.assertEqual(email.subject, 'Login link referral fifty fifty')
+        login_link = f"{HOST}/login-code/{login_code.hash}"        
+        message = f"Click here to login:  {login_link}"
         self.assertEqual(email.body, message)

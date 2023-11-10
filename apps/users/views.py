@@ -118,7 +118,7 @@ class Register (View):
             # Catch duplicated users
             print (e)
             return render (request, "users/register.html", {
-                "error": "Error creating user|Email or phone already exists",
+                "error": "Error creating user|Email or phone already exists. Do not forget to activate your email with the link we sent you after signing up.",
                 "subtitle": Register.subtitle,
                 "default_script": Register.default_script
             })

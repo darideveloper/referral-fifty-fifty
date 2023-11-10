@@ -173,7 +173,7 @@ class Activate (View):
         
         # Render success template       
         return render (request, "users/activate.html", {
-            "subtitle": "Activate",
+            "subtitle": "activate",
             "name": user.name
         })
         

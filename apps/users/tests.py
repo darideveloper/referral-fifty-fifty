@@ -434,6 +434,7 @@ class TestActivateView (TestCase):
         
         # Validate response redirect to 404 page
         self.assertEqual (response.status_code, 302)
+        self.assertEqual (response.url, "/404")
         
         # Validate user keep inactive
         self.assertEqual (self.user.active, False)
@@ -577,3 +578,79 @@ class TestLoginView (TestCase):
         login_link = f"{HOST}/login-code/{login_code.hash}"        
         message = f"Click here to login:  {login_link}"
         self.assertEqual(email.body, message)
+        
+class TestLoginCodeView (TestCase):
+    
+    def setUp(self):
+        
+        # Create user
+        self.user = models.User.objects.create (
+            name="test",
+            last_name="test",
+            email=EMAIL_HOST_USER,
+            phone="1234567890",
+            active=True
+        )
+        
+        # Generate login code
+        self.login_code = models.LoginCodes.objects.create (
+            user=self.user
+        ).hash
+                
+    def test_invalid_hash (self):
+        """ Try to open login link with invalid hash 
+            Expected: redirect to 404 page
+        """
+        
+        # Make request
+        response = self.client.get (
+            reverse("login-code", kwargs={"hash": "invalid_hash"})
+        )
+        
+        # Validate response redirect to 404 page
+        self.assertEqual (response.status_code, 302)
+        self.assertEqual (response.url, "/404")
+        
+        # Validate the is not a cookie
+        self.assertEqual (response.cookies, {})
+        
+    def test_invalid_user (self):
+        """ Try to login with correct hash but invalid user
+            Expected: redirect to 404 page
+        """
+        
+        # Disable user
+        self.user.active = False
+        self.user.save()
+        
+        # Make request
+        response = self.client.get (
+            reverse("login-code", kwargs={"hash": self.login_code})
+        )
+        
+        # Validate response redirect to 404 page
+        self.assertEqual (response.status_code, 302)
+        self.assertEqual (response.url, "/404")
+        
+        # Validate the is not a cookie
+        self.assertEqual (response.cookies, {})
+        
+    def test_success (self):
+        """ Try to login with correct user and hash 
+            Expected: redirect to home and set cookie
+        """
+            
+        # Make request
+        print (self.login_code)
+        print (self.user)
+        response = self.client.get (
+            reverse("login-code", kwargs={"hash": self.login_code})
+        )
+        
+        # Validate response redirect to 404 page
+        self.assertEqual (response.status_code, 302)
+        self.assertEqual (response.url, "/")
+        
+        # Validate the is not a cookie
+        session_data = self.client.session
+        self.assertEqual(session_data['user'], self.user.id)

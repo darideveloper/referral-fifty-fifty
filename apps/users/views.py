@@ -184,7 +184,7 @@ class Login (View):
     default_script = True
     
     def get (self, request): 
-        """ render rgister form """        
+        """ render register form """        
           
         # Render success template       
         return render (request, "users/login.html", {
@@ -193,7 +193,7 @@ class Login (View):
         })
     
     def post (self, request):
-        """ Validate login """
+        """ submit login email """
         
         # Get email from post data
         email = request.POST.get ("email", None)
@@ -225,20 +225,27 @@ class Login (View):
             "default_script": Login.default_script
         })
         
-# # Get login code
-# login_code_math = models.LoginCodes.objects.filter(hash=hash)
-# if not login_code_math:
-#     # redirect to not found
-#     return HttpResponseRedirect ("/404")
+class LoginCode (View):
+    """ Login with dynamic link by email """
+        
+    def get (self, request, hash):
+        """ Validate login """
+                        
+        # Get login code
+        login_code_math = models.LoginCodes.objects.filter(hash=hash)
+        if not login_code_math:
+            # redirect to not found
+            return HttpResponseRedirect ("/404")
 
-# user = login_code_math.first().user
+        user = login_code_math.first().user
 
-# # Validate if the user is activate
+        # Validate if the user is activate
+        if not user.active:
+            # redirect to not found
+            return HttpResponseRedirect ("/404")
 
-
-# # Activate user
-# user.active = True
-# user.save ()
-
-# # Save login cookie
-# request.session["user"] = user.id
+        # Save login cookie
+        request.session["user"] = user.id
+        
+        # Rdirect to home page
+        return HttpResponseRedirect ("/")

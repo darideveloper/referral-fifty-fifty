@@ -1,5 +1,6 @@
 import secrets
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 class User(models.Model):
@@ -38,11 +39,15 @@ class ReferralLink (models.Model):
     
     def __str__ (self):
         return f"{self.user} - {self.store} ({self.link})"
-    
+
 class LoginCodes (models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     hash = models.CharField(max_length=64)
+    datetime = models.DateTimeField(auto_now_add=True)
+    
+    def __str__ (self):
+        return f"{self.user} - {self.hash}"
     
     def save (self, *args, **kwargs):
         

@@ -17,3 +17,9 @@ class ReferralLinkAdmin (admin.ModelAdmin):
     list_display = ['id', 'user', 'store', 'link']
     ordering = ['id', 'user__name', 'store__name', 'link']
     list_filter = ['user', 'store']
+    
+@admin.register(models.LoginCodes)
+class LoginCodesAdmin (admin.ModelAdmin):
+    list_display = ['id', 'user', 'hash', 'datetime']
+    ordering = ['id', 'user__name', 'hash', 'datetime']
+    list_filter = ['user', 'datetime']

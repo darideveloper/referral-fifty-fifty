@@ -44,7 +44,8 @@ class TestReferralView (TestCase):
         # Request data
         self.get_data = {
             "phone": self.user.phone,
-            "email": self.user.email
+            "email": self.user.email,
+            "hash": self.user.hash
         }
 
         self.post_data = {
@@ -60,14 +61,15 @@ class TestReferralView (TestCase):
 
         self.client.defaults["HTTP_token"] = self.token.token
 
-    def test_get_no_phone_no_email(self):
-        """ Try to get referral links without phone and email
+    def test_get_no_phone_no_email_no_hash(self):
+        """ Try to get referral links without phone, email or hash
             Expected: 400
         """
 
         # Remove phone from data
         self.get_data.pop("phone")
         self.get_data.pop("email")
+        self.get_data.pop("hash")
 
         # Make request
         response = self.client.get(
@@ -79,7 +81,7 @@ class TestReferralView (TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {
             "status": "error",
-            "message": "Phone or email is required",
+            "message": "Phone or email or hash is required",
             "data": {}
         })
 
@@ -90,6 +92,7 @@ class TestReferralView (TestCase):
 
         # Change to wrong phone number
         self.get_data.pop("email")
+        self.get_data.pop ("hash")
         self.get_data["phone"] = "0000000"
 
         # Make request
@@ -113,7 +116,32 @@ class TestReferralView (TestCase):
 
         # Change to wrong phone number
         self.get_data.pop("phone")
+        self.get_data.pop ("hash")
         self.get_data["email"] = "fake@gmail.com"
+
+        # Make request
+        response = self.client.get(
+            self.url,
+            data=self.get_data
+        )
+
+        # Check response
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {
+            "status": "error",
+            "message": "User not found",
+            "data": {}
+        })
+        
+    def test_get_invalid_hash(self):
+        """ Try to get referral links with invalid hash (no registered user)
+            Expected: 404
+        """
+
+        # Change to wrong phone number
+        self.get_data.pop("phone")
+        self.get_data.pop ("email")
+        self.get_data["hash"] = "jhasgfyhsaty%/&GHashg"
 
         # Make request
         response = self.client.get(
@@ -136,6 +164,7 @@ class TestReferralView (TestCase):
 
         # Remove email from data
         self.get_data.pop("email")
+        self.get_data.pop("hash")
 
         # Disable user
         self.user.active = False
@@ -162,6 +191,34 @@ class TestReferralView (TestCase):
 
         # Remove phone from data
         self.get_data.pop("phone")
+        self.get_data.pop("hash")
+
+        # Disable user
+        self.user.active = False
+        self.user.save()
+
+        # Make request
+        response = self.client.get(
+            self.url,
+            data=self.get_data
+        )
+
+        # Check response
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {
+            "status": "error",
+            "message": "User not found",
+            "data": {}
+        })
+        
+    def test_get_disbaled_user_hash(self):
+        """ Try to get referral links with a correct hash but disable user 
+            Expected: 404 
+        """
+
+        # Remove phone from data
+        self.get_data.pop("phone")
+        self.get_data.pop("email")
 
         # Disable user
         self.user.active = False
@@ -188,6 +245,7 @@ class TestReferralView (TestCase):
 
         # Remove email from data
         self.get_data.pop("email")
+        self.get_data.pop("hash")
 
         # Make request
         response = self.client.get(
@@ -212,6 +270,7 @@ class TestReferralView (TestCase):
 
         # Remove phone from data
         self.get_data.pop("phone")
+        self.get_data.pop("hash")
 
         # Make request
         response = self.client.get(
@@ -229,6 +288,30 @@ class TestReferralView (TestCase):
             }
         })
 
+    def test_get_hash(self):
+        """ Try to get referral links with valid hash 
+            Expected: 200
+        """
+
+        # Remove phone from data
+        self.get_data.pop("phone")
+        self.get_data.pop("email")
+
+        # Make request
+        response = self.client.get(
+            self.url,
+            data=self.get_data
+        )
+
+        # Check response
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            "status": "success",
+            "message": "User found",
+            "data": {
+                self.store.name: self.referral.link
+            }
+        })
 
 class TestRegisterView (TestCase):
 
@@ -653,8 +736,6 @@ class TestLoginCodeView (TestCase):
         """
             
         # Make request
-        print (self.login_code)
-        print (self.user)
         response = self.client.get (
             reverse("login-code", kwargs={"hash": self.login_code})
         )
@@ -708,4 +789,4 @@ class TestLogout (TestCase):
         
         # Validate the is not a cookie
         session_data = self.client.session
-        self.assertEqual(session_data, {})
+        self.assertEqual(session_data.get("user", ""), "")

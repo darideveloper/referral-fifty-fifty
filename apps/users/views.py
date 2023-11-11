@@ -36,20 +36,23 @@ class Referral (View):
         # Get phone and email from get data
         phone = request.GET.get('phone', None)
         email = request.GET.get('email', None)
+        hash = request.GET.get('hash', None)
         
         # If phone is None, return error
-        if not phone and not email:
+        if not phone and not email and not hash:
             return JsonResponse ({
                 "status": "error",
-                "message": "Phone or email is required",
+                "message": "Phone or email or hash is required",
                 "data": {}
             }, status=400)
             
         # Get user by phone
         if phone:
             users_match = models.User.objects.filter(phone=phone, active=True)
-        else:
+        elif email:
             users_match = models.User.objects.filter(email=email, active=True)
+        else:
+            users_match = models.User.objects.filter(hash=hash, active=True)
         
         if users_match.count() != 1:
             return JsonResponse ({

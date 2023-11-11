@@ -37,7 +37,7 @@
       <ul class="">
         {% if request.session.user %}
         <li>
-          <a href="/logout">Logout</a>
+          <button id="logout-btn">Logout</button>
         </li>
         {% else %}
         <li>
@@ -100,6 +100,9 @@
   <!-- manage loading spinner -->
   <script src="{% static 'users/code/loading.js' %}"></script>
     
+  <!-- Logout button -->
+  <script src="{% static 'users/code/logout.js' %}"></script>
+
   {% block extrajs %}
   {% endblock %}
 

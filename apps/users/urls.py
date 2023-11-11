@@ -10,4 +10,5 @@ urlpatterns = [
     path ("404", views.error404Preview, name="404"),
     path ("login/", views.Login.as_view(), name="login"),
     path ("login-code/<hash>/", views.LoginCode.as_view(), name="login-code"),
+    path ("logout/", views.Logout.as_view(), name="logout"),
 ]

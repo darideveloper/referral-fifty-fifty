@@ -252,3 +252,16 @@ class LoginCode (View):
         
         # Rdirect to home page
         return HttpResponseRedirect ("/")
+
+class Logout (View):
+    """ Logout user """
+    
+    def get (self, request):
+        """ Delete session """
+        
+        # Delete session data
+        request.session.flush ()
+        
+        # Redirect to home page
+        return HttpResponseRedirect ("/")
+        

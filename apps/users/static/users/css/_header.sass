@@ -37,8 +37,18 @@
                 list-style: none
                 margin: 5px
 
-                a
+                a, button
                     padding: 10px
+                    border: none
+                    background: none
+                    font-weight: bold
+                    color: $color_c
+                    transition-duration: 0.1s
+                    font-size: 1rem
+                    cursor: pointer
+
+                    &:hover
+                        color: rgba($color_b, 0.5)
 
     @media screen and (max-width: 500px)
         flex-direction: column

@@ -672,3 +672,40 @@ class TestLoginCodeView (TestCase):
             user=self.user
         )
         self.assertEqual (login_code_match.count (), 0)
+        
+class TestLogout (TestCase):
+    
+      
+    def setUp(self):
+        
+        # Create user
+        self.user = models.User.objects.create (
+            name="test",
+            last_name="test",
+            email=EMAIL_HOST_USER,
+            phone="1234567890",
+            active=True
+        )
+        
+    def test_logout (self):
+        """ Try to logout
+            Expected: redirect to login page and delete cookie
+        """
+        
+        # Create session
+        session = self.client.session
+        session['user'] = self.user.id
+        session.save()
+        
+        # Make request
+        response = self.client.get (
+            reverse("logout")
+        )
+        
+        # Validate response redirect to 404 page
+        self.assertEqual (response.status_code, 302)
+        self.assertEqual (response.url, "/")
+        
+        # Validate the is not a cookie
+        session_data = self.client.session
+        self.assertEqual(session_data, {})

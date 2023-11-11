@@ -614,6 +614,12 @@ class TestLoginCodeView (TestCase):
         # Validate the is not a cookie
         self.assertEqual (response.cookies, {})
         
+        # Validte if login code was deleted
+        login_code_match = models.LoginCodes.objects.filter (
+            user=self.user
+        )
+        self.assertEqual (login_code_match.count (), 1)
+        
     def test_invalid_user (self):
         """ Try to login with correct hash but invalid user
             Expected: redirect to 404 page
@@ -635,6 +641,12 @@ class TestLoginCodeView (TestCase):
         # Validate the is not a cookie
         self.assertEqual (response.cookies, {})
         
+        # Validte if login code was deleted
+        login_code_match = models.LoginCodes.objects.filter (
+            user=self.user
+        )
+        self.assertEqual (login_code_match.count (), 1)
+        
     def test_success (self):
         """ Try to login with correct user and hash 
             Expected: redirect to home and set cookie
@@ -654,3 +666,9 @@ class TestLoginCodeView (TestCase):
         # Validate the is not a cookie
         session_data = self.client.session
         self.assertEqual(session_data['user'], self.user.id)
+        
+        # Validte if login code was deleted
+        login_code_match = models.LoginCodes.objects.filter (
+            user=self.user
+        )
+        self.assertEqual (login_code_match.count (), 0)

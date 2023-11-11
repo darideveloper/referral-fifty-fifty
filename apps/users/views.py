@@ -247,5 +247,8 @@ class LoginCode (View):
         # Save login cookie
         request.session["user"] = user.id
         
+        # Delete login code
+        login_code_math.delete ()
+        
         # Rdirect to home page
         return HttpResponseRedirect ("/")

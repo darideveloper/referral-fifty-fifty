@@ -99,7 +99,14 @@ class Register (View):
     default_script = True
     
     def get (self, request):         
-        """ render rgister form """        
+        """ render rgister form """
+        
+        # Validate user session
+        user_id = request.session.get ("user", None)
+        if user_id:
+            # Redirect to home
+            return HttpResponseRedirect ("/")
+                
         return render (request, "users/register.html", {
             "subtitle": Register.subtitle
         })
@@ -202,7 +209,13 @@ class Login (View):
     default_script = True
     
     def get (self, request): 
-        """ render register form """        
+        """ render register form """ 
+        
+        # Validate user session
+        user_id = request.session.get ("user", None)
+        if user_id:
+            # Redirect to home
+            return HttpResponseRedirect ("/")       
           
         # Render success template       
         return render (request, "users/login.html", {

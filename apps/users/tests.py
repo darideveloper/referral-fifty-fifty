@@ -341,6 +341,14 @@ class TestRegisterView (TestCase):
             "ebay": "refid=6789",
             "walmart": "refid=0000"
         }
+        
+        self.user = models.User.objects.create (
+            name="test",
+            last_name="test",
+            email="sample@gmail.com",
+            phone="000000",
+            active=True
+        )
 
     def test_get(self):
         """ Validate loading the register form """
@@ -364,6 +372,24 @@ class TestRegisterView (TestCase):
         self.assertNotEqual(soup.select("#walmart"), [])
         self.assertNotEqual(soup.select("input.btn.cta"), [])
         
+    def test_get_logged (self):
+        """ Validate try to load login page when user is logged
+            Expected: redirect to home
+        """
+
+        # Create session
+        session = self.client.session
+        session['user'] = self.user.id
+        session.save()
+        
+        response = self.client.get(
+            self.url,
+        )
+
+        # Validate redirect to home
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/")
+                
     def test_post_missing_data (self): 
         """ Try to submit form with missing required data
             Expected: error message
@@ -504,7 +530,7 @@ class TestActivateView (TestCase):
             email=EMAIL_HOST_USER,
             phone="1234567890",
         )
-        
+    
     def test_invalid_hash (self):
         """ Try to open activate page with invalid hash 
             Expected: redirect to 404 page
@@ -555,7 +581,7 @@ class TestLoginView (TestCase):
             name="test",
             last_name="test",
             email=EMAIL_HOST_USER,
-            phone="1234567890",
+            phone="000000",
             active=True
         )
         
@@ -584,6 +610,24 @@ class TestLoginView (TestCase):
         self.assertIn (title, html_text)
         self.assertIn (form, html_text)
         self.assertIn (input_email, html_text)
+        
+    def test_get_logged (self):
+        """ Validate try to load login page when user is logged
+            Expected: redirect to home
+        """
+
+        # Create session
+        session = self.client.session
+        session['user'] = self.user.id
+        session.save()
+        
+        response = self.client.get(
+            self.url,
+        )
+
+        # Validate redirect to home
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/")
         
     def test_post_invalid_email (self):
         """ Try to login with no registered email 
@@ -635,7 +679,7 @@ class TestLoginView (TestCase):
             Expected: confirm email message
         """
         
-          # make request
+        # make request
         response = self.client.post (
             self.url,
             data=self.form_data

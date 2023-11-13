@@ -54,12 +54,3 @@ class LoginCodes (models.Model):
             self.hash = secrets.token_hex(32)
             
         super().save(*args, **kwargs)
-        
-class ApiKey (models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255)
-    key = models.CharField(max_length=64)
-    active = models.BooleanField(default=False)
-    
-    def __str__ (self):
-        return f"{self.name} ({self.key})"

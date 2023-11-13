@@ -1,9 +1,10 @@
+import os
 from django.views import View
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from users import models 
 from core.wrappers import validate_token
-from referralfiftyfifty.settings import HOST
+from referralfiftyfifty.settings import HOST, PRICE_CHECKER_HOST
 from core.emails import submit_email
 
 class Index (View):
@@ -11,7 +12,21 @@ class Index (View):
     
     def get (self, request): 
         """ render home template """               
-        return render (request, "users/index.html")
+        
+        # Validate user session
+        user_id = request.session.get ("user", None)
+        if not user_id:
+            # Redirect to login
+            return HttpResponseRedirect ("/login")
+        
+        # Get user hash
+        user = models.User.objects.get (id=user_id)
+        user_hash = user.hash        
+        referral_link = f"{PRICE_CHECKER_HOST}/referral/{user_hash}"    
+        
+        return render (request, "users/index.html", context={
+            "referral_link":referral_link,
+        })
     
 def error404(request, exception):
     """ Error 404 page """

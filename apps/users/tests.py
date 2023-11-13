@@ -4,7 +4,7 @@ from users import models
 from django.urls import reverse
 from django.test import TestCase
 from core import models as core_models
-from referralfiftyfifty.settings import EMAIL_HOST_USER, HOST
+from referralfiftyfifty.settings import EMAIL_HOST_USER, HOST, PRICE_CHECKER_HOST
 
 class TestReferralView (TestCase):
 
@@ -790,3 +790,58 @@ class TestLogout (TestCase):
         # Validate the is not a cookie
         session_data = self.client.session
         self.assertEqual(session_data.get("user", ""), "")
+        
+class TestIndexView (TestCase):
+    
+    def setUp(self):
+        
+        # Create user
+        self.user = models.User.objects.create (
+            name="test",
+            last_name="test",
+            email=EMAIL_HOST_USER,
+            phone="1234567890",
+            active=True
+        )
+        
+        self.url = reverse("index")
+    
+    def test_no_logged (self):
+        """ Try to load index page without login
+            Expected: redirect to login page
+        """
+        
+        # Make request
+        response = self.client.get (
+            self.url
+        )
+        
+        # Validate response redirect to 404 page
+        self.assertEqual (response.status_code, 302)
+        self.assertEqual (response.url, "/login")
+    
+    def test_logged (self):
+        """ Try to load index page with login
+            Expected: show referral link
+        """
+        
+        # Create session
+        session = self.client.session
+        session['user'] = self.user.id
+        session.save()
+        
+        # Make request
+        response = self.client.get (
+            self.url
+        )
+        
+        # Validate response redirect to 404 page
+        self.assertEqual (response.status_code, 200)
+
+        # Validate login link
+        user_hash = self.user.hash
+        login_link = f"{PRICE_CHECKER_HOST}/referral/{user_hash}"
+        soup = BeautifulSoup(response.content, "html.parser")
+        self.assertIsNotNone(soup.find("a", href=login_link))
+        
+ 

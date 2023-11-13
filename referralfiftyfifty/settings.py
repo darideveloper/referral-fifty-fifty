@@ -158,5 +158,6 @@ FILE_UPLOAD_HANDLERS = [
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     
-# Project host
+# Other rnviroment variables
 HOST = os.environ.get("HOST")
+PRICE_CHECKER_HOST = os.environ.get("PRICE_CHECKER_HOST")

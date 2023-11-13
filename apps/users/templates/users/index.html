@@ -1,7 +1,16 @@
 {% extends "./template.html" %}
+{% load static %}
 
 {% block content %}
 <div class="index container">
   <h1>Welcome to Referral Fifty Fifty</h1>
+  <p>Referral web page link: 
+    <a href="{{referral_link}}" target="_blank" id="referral-link">{{referral_link}}</a>
+  </p>
+  <button class="btn cta" id="btn-copy">Copy</button>
 </div>
+{% endblock %}
+
+{% block extrajs %}
+<script src="{% static 'users/code/index.js' %}"></script>
 {% endblock %}

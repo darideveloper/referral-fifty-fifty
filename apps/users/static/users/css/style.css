@@ -317,6 +317,15 @@ main .index {
   justify-content: center;
   align-items: center;
 }
+main .index p {
+  text-align: center;
+  font-size: 1.5rem;
+}
+main .index p a {
+  font-size: 1rem;
+  display: block;
+  margin: 10px;
+}
 
 main.activate .content {
   height: calc(100vh - 150px - 143px);

@@ -356,4 +356,10 @@ main.login .content .btn.cta {
   }
 }
 
+.legal-content {
+  max-width: 1000px;
+  width: 90%;
+  margin: 0 auto;
+}
+
 /*# sourceMappingURL=style.css.map */

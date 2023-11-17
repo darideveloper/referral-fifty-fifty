@@ -571,7 +571,6 @@ class TestActivateView (TestCase):
         self.assertIn (title, html_text)
         self.assertIn (link, html_text)
         
-        
 class TestLoginView (TestCase):
     
     def setUp(self):
@@ -798,8 +797,7 @@ class TestLoginCodeView (TestCase):
         )
         self.assertEqual (login_code_match.count (), 0)
         
-class TestLogout (TestCase):
-    
+class TestLogout (TestCase): 
       
     def setUp(self):
         
@@ -888,4 +886,42 @@ class TestIndexView (TestCase):
         soup = BeautifulSoup(response.content, "html.parser")
         self.assertIsNotNone(soup.find("a", href=login_link))
         
- 
+class TestLegal (TestCase):
+    
+    def test_get (self):
+        """ Try to load legal page and validate content 
+        Expected: show legal content
+        """
+        
+        # Make request
+        response = self.client.get (
+            reverse("legal")
+        )
+        
+        # Validate response
+        self.assertEqual (response.status_code, 200)
+        
+        # Validate html content
+        title = '<h1>Legals</h1>'
+        html_text = response.content.decode('utf-8')
+        self.assertIn (title, html_text)
+        
+class TestLegalFramework (TestCase):
+    
+    def test_get (self):
+        """ Try to load legal framework page and validate content 
+        Expected: show legal content
+        """
+        
+        # Make request
+        response = self.client.get (
+            reverse("legal-framework")
+        )
+        
+        # Validate response
+        self.assertEqual (response.status_code, 200)
+        
+        # Validate html content
+        title = '<h1>Legal Framework and Basis for Participation and Earnings in Commission Sharing Programs in the United States</h1>'
+        html_text = response.content.decode('utf-8')
+        self.assertIn (title, html_text)

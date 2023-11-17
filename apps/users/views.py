@@ -295,4 +295,24 @@ class Logout (View):
         
         # Redirect to home page
         return HttpResponseRedirect ("/")
+
+class Legal (View):
+    """ Legal page """
+    
+    def get (self, request):
+        """ Render legal page """
+        
+        return render (request, "users/legal.html", {
+            "subtitle": "legals"
+        })
+
+class LegalFramework (View):
+    """ Legal page """
+    
+    def get (self, request):
+        """ Render legal page """
+        
+        return render (request, "users/legal-framework.html", {
+            "subtitle": "legal framework"
+        })
         

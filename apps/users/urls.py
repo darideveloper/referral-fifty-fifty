@@ -11,4 +11,6 @@ urlpatterns = [
     path ("login/", views.Login.as_view(), name="login"),
     path ("login-code/<hash>/", views.LoginCode.as_view(), name="login-code"),
     path ("logout/", views.Logout.as_view(), name="logout"),
+    path ("legal/", views.Legal.as_view(), name="legal"),
+    path ("legal-framework/", views.LegalFramework.as_view(), name="legal-framework"),
 ]

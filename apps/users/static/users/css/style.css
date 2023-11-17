@@ -337,7 +337,7 @@ main.login {
 main.login .content {
   width: 440px;
   margin: 0 auto;
-  min-height: 69vh;
+  min-height: calc(100vh - 297px);
   display: flex;
   flex-direction: column;
   justify-content: center;

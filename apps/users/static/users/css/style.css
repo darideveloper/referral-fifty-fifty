@@ -220,6 +220,12 @@ a:hover {
 #footer > * {
   margin: 0.8rem 0;
 }
+#footer .referral {
+  margin: 5px auto;
+}
+#footer .referral a {
+  text-decoration: underline;
+}
 @media screen and (max-width: 550px) {
   #footer .links {
     flex-direction: column;
@@ -337,7 +343,7 @@ main.login {
 main.login .content {
   width: 440px;
   margin: 0 auto;
-  min-height: calc(100vh - 297px);
+  min-height: calc(100vh - 315px);
   display: flex;
   flex-direction: column;
   justify-content: center;
